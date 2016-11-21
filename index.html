@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Untitled Document.md</title>
+  <style></style>
+</head>
+<body>
+<h1 id="REM">REM</h1>
+<p>A starting point for big dreams.</p>
+<p>REM is a REST API for prototyping.</p>
+<p>Creating an application these days can often be paralyzing: Ruby or Python? Flask or Express? MySQL or Postgres? What about Redis? Often times, people give up before even starting.</p>
+<p>REM is useful if you want to put together a UI but don’t want to set up a server and a database to store your data yet (or ever). Maybe you’re making a demo, running a workshop, or test-driving a trendy javascript framework. Whatever it is, if you just want to get an idea on screen, this tool is for you.</p>
+<p>The REM API responds as if it had a real database storing your data, but rather than doing that, it saves data in a cookie instead.</p>
+<p>This means you can create entities, update them and query them, and the data will persist between requests, just like in a real API. The difference vs a real API is that no one else can see your data, because nothing actually gets saved in the server. Any data you create is only available to you, and only until the end of the browser session. As it turns out, this is sufficient for you to develop and test server interactions, and can even help iron out those embarrassing edge cases that made your last demo break because you forgot to account for zero-length lists.</p>
+<p>The <code>/api/users</code> endpoint comes pre-populated with some dummy data. You can also post anything to any endpoint you want (e.g. <code>/api/projects</code>, <code>/api/comments</code>, <code>/api/toys</code>, and so on) to create datasets on the fly. Those start off empty. <code>POST</code> endpoints automatically add an <code>id</code> field to new entities. In the same vein, other endpoints expect the primary key field to be called <code>id</code>, so that request like <code>PUT /api/things/1</code> and <code>DELETE /api/others/2</code> can affect the correct entities. Other than that, there are no schema restrictions.</p>
+<p>The server has <a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a> enabled for all origins, and no API key is required. You can just make requests from anywhere and be on your way.</p>
+<p>Note that cookies can only store about 4kb worth of data. If you go over the limit, the server will return an error and clear the cookie. When this happens, all the data will be erased, so you can continue using REM as a data storage mechanism without needing to mess around with the storage cookie.</p>
+<h3 id="About">About</h3>
+<p>REM is ~200 LOC, and has no NPM dependencies.</p>
+<p>Licence: MIT</p>
+<hr>
+<h2 id="API">API</h2>
+<p>Get a list of things</p>
+<pre><code>GET http://rem-rest-api.herokuapp.com/api/[things]
+</code></pre>
+<pre><code>{
+  &quot;offset&quot;: 0,
+  &quot;limit&quot;: 10,
+  &quot;total&quot;: 36,
+  &quot;data&quot;: [{
+    &quot;id&quot;: &quot;1&quot;,
+    &quot;firstName&quot;: &quot;Peter&quot;,
+    &quot;lastName&quot;: &quot;Mackenzie&quot;,
+  }, ...]
+}
+</code></pre>
+<p>Optional querystring parameters:</p>
+<ul>
+<li><code>offset</code>: pagination offset. Defaults to <code>0</code></li>
+<li><code>limit</code>: pagination size. Defaults to <code>10</code></li>
+</ul>
+<pre><code>GET http://rem-rest-api.herokuapp.com/api/[things]?offset=1&amp;limit=10
+</code></pre>
+<hr>
+<p>Get one thing</p>
+<pre><code>GET http://rem-rest-api.herokuapp.com/api/[things]/1
+</code></pre>
+<pre><code>{
+  &quot;id&quot;: &quot;1&quot;,
+  &quot;firstName&quot;: &quot;Peter&quot;,
+  &quot;lastName&quot;: &quot;Mackenzie&quot;,
+  &quot;email&quot;: &quot;petermackenzie@mailinator.com&quot;
+}
+</code></pre>
+<hr>
+<p>Create new thing</p>
+<pre><code>POST http://rem-rest-api.herokuapp.com/api/[things]
+
+{&quot;firstName&quot;: &quot;Lorem&quot;, &quot;lastName&quot;: &quot;Ipsum&quot;, &quot;email&quot;: &quot;loremipsum@mailinator.com&quot;}
+</code></pre>
+<hr>
+<p>Replace thing</p>
+<pre><code>PUT http://rem-rest-api.herokuapp.com/api/[things]/1
+
+{&quot;id&quot;: 1, &quot;firstName&quot;: &quot;Lorem&quot;, &quot;lastName&quot;: &quot;Ipsum&quot;, &quot;email&quot;: &quot;loremipsum@mailinator.com&quot;}
+</code></pre>
+<hr>
+<p>Delete thing</p>
+<pre><code>DELETE http://rem-rest-api.herokuapp.com/api/[things]/1
+</code></pre>
+
+</body>
+</html>

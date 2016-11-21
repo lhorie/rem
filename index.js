@@ -8,11 +8,18 @@ var HttpError = require("./HttpError")
 
 var data = require("./data.json")
 
+var home = require("fs").readFileSync("index.html", "utf-8")
+
 http.createServer(function route(req, res) {
   var u = url.parse(req.url)
   var q = u.search ? querystring.parse(u.search.slice(1)) : {}
   var args = u.pathname.match(/\/(api)\/([^\/]+)(?:\/([^\/]+))?/) // `/api/:collection/:id`
   try {
+    if (args == null) {
+      res.writeHead(200)
+      res.end(home)
+      return
+    }
     if (args[1] !== "api") throw new HttpError(404, "Not found")
     var key = args[2]
     var id = args[3]
