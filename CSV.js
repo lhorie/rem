@@ -41,7 +41,8 @@ module.exports = {
 
     for (var i = 0; i < data.length; i++) {
       for (var k in list[i]) {
-        data += list[i][k].indexOf("\"") > -1 ? "\"" + list[i][k].replace(/("|,)/g, "\\$1") + "\"" : list[i][k] + ","
+        var value = String(list[i][k])
+        data += value.indexOf("\"") > -1 ? "\"" + value.replace(/("|,)/g, "\\$1") + "\"" : value + ","
       }
       data = data.slice(0, -1) + "\n"
     }
