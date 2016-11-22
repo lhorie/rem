@@ -131,12 +131,15 @@ function get(id, items) {
 function put(id, items, item) {
   if (!id) throw new HttpError(400, "ID must be provided")
   item.id = id
+  var found = false
   for (var i = 0; i < items.length; i++) {
     if (items[i].id === id) {
       items[i] = item
+      found = true
       break
     }
   }
+  if (!found) items.push(item)
 }
 function post(id, items, item) {
   if (id) throw new HttpError(400, "Cannot post with ID")
