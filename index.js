@@ -127,7 +127,6 @@ function get(id, items) {
 }
 function put(id, items, item) {
   if (!id) throw new HttpError(400, "ID must be provided")
-  if (item.id !== id) throw new HttpError(404, "ID does not match")
   for (var i = 0; i < items.length; i++) {
     if (items[i].id === item.id) {
       items[i] = item
