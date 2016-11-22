@@ -50,10 +50,13 @@ http.createServer(function route(req, res) {
       })
       req.on("end",function commit() {
         try {
-          var item = JSON.parse(body)
-          if (req.method === "PUT") put(id, items, item)
-          if (req.method === "POST") post(id, items, item)
-          if (req.method === "DELETE") remove(id, items, item)
+          var item = body !== "" ? JSON.parse(body) : null
+          if (req.method === "DELETE") remove(id, items)
+          else if (item != null) {
+            if (req.method === "PUT") put(id, items, item)
+            if (req.method === "POST") post(id, items, item)
+          }
+          else throw new HttpError("Missing JSON input")
           db[key] = items
           var output = stageData(db)
           if (output.length <= 4093) {
@@ -127,8 +130,9 @@ function get(id, items) {
 }
 function put(id, items, item) {
   if (!id) throw new HttpError(400, "ID must be provided")
+  item.id = id
   for (var i = 0; i < items.length; i++) {
-    if (items[i].id === item.id) {
+    if (items[i].id === id) {
       items[i] = item
       break
     }
@@ -141,10 +145,9 @@ function post(id, items, item) {
   item.id = (Number(newId) + 1).toString()
   items.push(item)
 }
-function remove(id, items, item) {
+function remove(id, items) {
   if (!id) throw new HttpError(400, "ID must be provided")
-  if (item.id !== id) throw new HttpError(404, "Item not found")
   for (var i = 0; i < items.length; i++) {
-    if (items[i].id === item.id) items.splice(i, 1)
+    if (items[i].id === id) items.splice(i, 1)
   }
 }
