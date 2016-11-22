@@ -70,7 +70,7 @@ POST http://rem-rest-api.herokuapp.com/api/[things]
 
 ---
 
-#### Replace thing
+#### Upsert/replace thing
 
 ```
 PUT http://rem-rest-api.herokuapp.com/api/[things]/1
