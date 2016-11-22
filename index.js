@@ -7,7 +7,6 @@ var Cookie = require("./Cookie")
 var HttpError = require("./HttpError")
 
 var data = require("./data.json")
-
 var home = require("fs").readFileSync("index.html", "utf-8")
 
 http.createServer(function route(req, res) {
@@ -16,9 +15,12 @@ http.createServer(function route(req, res) {
   var args = u.pathname.match(/\/(api)\/([^\/]+)(?:\/([^\/]+))?/) // `/api/:collection/:id`
   try {
     if (args == null) {
-      res.writeHead(200)
-      res.end(home)
-      return
+      if (u.pathname === "/") {
+        res.writeHead(200)
+        res.end(home)
+        return
+      }
+      else throw new HttpError(404, "Not found")
     }
     if (args[1] !== "api") throw new HttpError(404, "Not found")
     var key = args[2]
@@ -70,7 +72,7 @@ http.createServer(function route(req, res) {
               "Set-Cookie": output,
               "Access-Control-Allow-Origin": "*",
             })
-            res.end(JSON.stringify({message: error.message, stack: error.stack}, null, 2))
+            res.end(JSON.stringify({message: error.message}, null, 2))
           }
         }
         catch (e) {
@@ -78,7 +80,7 @@ http.createServer(function route(req, res) {
             "Content-Type": "application/json",
             "Access-Control-Allow-Origin": "*",
           })
-          res.end(JSON.stringify({message: e.message, stack: e.stack}, null, 2))
+          res.end(JSON.stringify({message: e.message}, null, 2))
         }
       })
     }
@@ -98,7 +100,7 @@ http.createServer(function route(req, res) {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     })
-    res.end(JSON.stringify({message: e.message, stack: e.stack}, null, 2))
+    res.end(JSON.stringify({message: e.message}, null, 2))
   }
 }).listen(process.env.PORT || 8000)
 
