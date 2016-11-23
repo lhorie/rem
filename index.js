@@ -3,11 +3,12 @@ var url = require("url")
 var querystring = require("querystring")
 
 var CSV = require("./CSV")
+var Type = require("./Type")
 var Cookie = require("./Cookie")
 var HttpError = require("./HttpError")
 
-var data = require("./data.json")
 var home = require("fs").readFileSync("index.html", "utf-8")
+var data = require("./data.json")
 
 http.createServer(function route(req, res) {
   var u = url.parse(req.url)
@@ -24,13 +25,14 @@ http.createServer(function route(req, res) {
     }
     if (args[1] !== "api") throw new HttpError(404, "Not found")
     var key = args[2]
-    var id = args[3]
+    var id = Number(args[3])
     var db = getData(req.headers.cookie)
     var items = db[key] || []
     if (req.method === "GET") {
       res.writeHead(200, {
         "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": req.headers.origin,
+        "Access-Control-Allow-Credentials": "true",
       })
       var offset = isNaN(parseInt(q.offset, 10)) ? 0 : parseInt(q.offset, 10)
       var limit = isNaN(parseInt(q.limit, 10)) ? 10 : parseInt(q.limit, 10)
@@ -63,7 +65,8 @@ http.createServer(function route(req, res) {
             res.writeHead(200, {
               "Content-Type": "application/json",
               "Set-Cookie": output,
-              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Origin": req.headers.origin,
+              "Access-Control-Allow-Credentials": "true",
             })
             res.end(JSON.stringify(item, null, 2))
           }
@@ -73,23 +76,26 @@ http.createServer(function route(req, res) {
             res.writeHead(500, {
               "Content-Type": "application/json",
               "Set-Cookie": output,
-              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Origin": req.headers.origin,
+              "Access-Control-Allow-Credentials": "true",
             })
-            res.end(JSON.stringify({message: error.message}, null, 2))
+            res.end(JSON.stringify({message: error.message, stack: e.stack}, null, 2))
           }
         }
         catch (e) {
           res.writeHead(e.method || 400, {
             "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Origin": req.headers.origin,
+            "Access-Control-Allow-Credentials": "true",
           })
-          res.end(JSON.stringify({message: e.message}, null, 2))
+          res.end(JSON.stringify({message: e.message, stack: e.stack}, null, 2))
         }
       })
     }
     else if (req.method === "OPTIONS") {
       res.writeHead(200, {
-        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Origin": req.headers.origin,
+        "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type",
         "Access-Control-Max-Age": 600, // seconds
@@ -101,23 +107,30 @@ http.createServer(function route(req, res) {
   catch (e) {
     res.writeHead(e.method || 400, {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": req.headers.origin,
+      "Access-Control-Allow-Credentials": "true",
     })
-    res.end(JSON.stringify({message: e.message}, null, 2))
+    res.end(JSON.stringify({message: e.message, stack: e.stack}, null, 2))
   }
 }).listen(process.env.PORT || 8000)
 
 function getData(cookieString) {
   var map = Cookie.parse(cookieString)
   if (Object.keys(map).length > 0) {
-    for (var k in map) map[k] = CSV.parse(map[k])
+    for (var k in map) {
+      var csv = CSV.parse(map[k])
+      map[k] = Type.decode(csv)
+    }
+    return map
   }
-  return data
+  return JSON.parse(JSON.stringify(data))
 }
 function stageData(db) {
   var cookies = []
   for (var k in db) {
-    cookies.push(k + "=" + encodeURIComponent(CSV.create(db[k])))
+    var typed = Type.encode(db[k])
+    var csv = CSV.create(typed)
+    cookies.push(k + "=" + encodeURIComponent(csv) + "; Path=/;")
   }
   return cookies
 }
@@ -145,7 +158,7 @@ function post(id, items, item) {
   if (id) throw new HttpError(400, "Cannot post with ID")
   var last = items.slice().sort(function(a, b) {return b.id - a.id})[0]
   var newId = last ? last.id : 0
-  item.id = (Number(newId) + 1).toString()
+  item.id = Number(newId) + 1
   items.push(item)
 }
 function remove(id, items) {

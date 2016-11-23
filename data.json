@@ -1,127 +1,127 @@
 {
     "users": [
         {
-            "id": "1",
+            "id": 1,
             "firstName": "Peter",
             "lastName": "Mackenzie"
         },
         {
-            "id": "2",
+            "id": 2,
             "firstName": "Cindy",
             "lastName": "Zhang"
         },
         {
-            "id": "3",
+            "id": 3,
             "firstName": "Ted",
             "lastName": "Smith"
         },
         {
-            "id": "4",
+            "id": 4,
             "firstName": "Susan",
             "lastName": "Fernbrook"
         },
         {
-            "id": "5",
+            "id": 5,
             "firstName": "Emily",
             "lastName": "Kim"
         },
         {
-            "id": "6",
+            "id": 6,
             "firstName": "Peter",
             "lastName": "Zhang"
         },
         {
-            "id": "7",
+            "id": 7,
             "firstName": "Cindy",
             "lastName": "Smith"
         },
         {
-            "id": "8",
+            "id": 8,
             "firstName": "Ted",
             "lastName": "Fernbrook"
         },
         {
-            "id": "9",
+            "id": 9,
             "firstName": "Susan",
             "lastName": "Kim"
         },
         {
-            "id": "10",
+            "id": 10,
             "firstName": "Emily",
             "lastName": "Mackenzie"
         },
         {
-            "id": "11",
+            "id": 11,
             "firstName": "Peter",
             "lastName": "Smith"
         },
         {
-            "id": "12",
+            "id": 12,
             "firstName": "Cindy",
             "lastName": "Fernbrook"
         },
         {
-            "id": "13",
+            "id": 13,
             "firstName": "Ted",
             "lastName": "Kim"
         },
         {
-            "id": "14",
+            "id": 14,
             "firstName": "Susan",
             "lastName": "Mackenzie"
         },
         {
-            "id": "15",
+            "id": 15,
             "firstName": "Emily",
             "lastName": "Zhang"
         },
         {
-            "id": "16",
+            "id": 16,
             "firstName": "Peter",
             "lastName": "Fernbrook"
         },
         {
-            "id": "17",
+            "id": 17,
             "firstName": "Cindy",
             "lastName": "Kim"
         },
         {
-            "id": "18",
+            "id": 18,
             "firstName": "Ted",
             "lastName": "Mackenzie"
         },
         {
-            "id": "19",
+            "id": 19,
             "firstName": "Susan",
             "lastName": "Zhang"
         },
         {
-            "id": "20",
+            "id": 20,
             "firstName": "Emily",
             "lastName": "Smith"
         },
         {
-            "id": "21",
+            "id": 21,
             "firstName": "Peter",
             "lastName": "Kim"
         },
         {
-            "id": "22",
+            "id": 22,
             "firstName": "Cindy",
             "lastName": "Mackenzie"
         },
         {
-            "id": "23",
+            "id": 23,
             "firstName": "Ted",
             "lastName": "Zhang"
         },
         {
-            "id": "24",
+            "id": 24,
             "firstName": "Susan",
             "lastName": "Smith"
         },
         {
-            "id": "25",
+            "id": 25,
             "firstName": "Emily",
             "lastName": "Fernbrook"
         }

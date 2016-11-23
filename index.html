@@ -28,6 +28,14 @@ code {background:#fcf5e0;font-family:monospace;}
 
     <p>REM is a REST API for prototyping. It accepts JSON requests, returns JSON responses and persists data between requests like a real API. But your test data is only visible to you. It's <a href="https://en.wikipedia.org/wiki/Cross-origin_resource_sharing">CORS</a> enabled and no API key is required.</p>
 
+    <pre><code>var xhr = new XMLHttpRequest()
+xhr.open("GET", "http://rem-rest-api.herokuapp.com/api/users", true)
+xhr.withCredentials = true
+xhr.send()
+xhr.onload = function() {
+  var data = JSON.parse(xhr.responseText)
+}</code></pre>
+
     <hr />
 
     <h3 id="api">API</h3>
@@ -125,7 +133,7 @@ code {background:#fcf5e0;font-family:monospace;}
 
     <h3 id="about">About</h3>
 
-    <p>REM is ~200 LOC, and has no NPM dependencies.</p>
+    <p>REM is ~250 LOC, and has no NPM dependencies.</p>
 
     <p>Licence: MIT</p>
   </main>

@@ -6,6 +6,16 @@ A starting point for big dreams.
 
 REM is a REST API for prototyping. It accepts JSON requests, returns JSON responses and persists data between requests like a real API. But your test data is only visible to you. It's [CORS](https://en.wikipedia.org/wiki/Cross-origin_resource_sharing) enabled and no API key is required.
 
+```javascript
+var xhr = new XMLHttpRequest()
+xhr.open("GET", "http://rem-rest-api.herokuapp.com/api/users", true)
+xhr.withCredentials = true
+xhr.send()
+xhr.onload = function() {
+  var data = JSON.parse(xhr.responseText)
+}
+```
+
 ---
 
 ### API
@@ -116,6 +126,6 @@ Note that cookies can only store about 4kb worth of data. If you go over the lim
 
 ### About
 
-REM is ~200 LOC, and has no NPM dependencies.
+REM is ~250 LOC, and has no NPM dependencies.
 
 Licence: MIT
