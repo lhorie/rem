@@ -28,6 +28,7 @@ http.createServer(function route(req, res) {
     var id = Number(args[3])
     var db = getData(req.headers.cookie)
     var items = db[key] || []
+	req.method = req.method.toUpperCase()
     if (req.method === "GET") {
       res.writeHead(200, {
         "Content-Type": "application/json",
