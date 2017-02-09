@@ -23,7 +23,11 @@ xhr.onload = function() {
 #### Get a list of things
 
 ```
-GET http://rem-rest-api.herokuapp.com/api/[things]
+GET http://rem-rest-api.herokuapp.com/api/users
+//or
+GET http://rem-rest-api.herokuapp.com/api/projects
+//or
+GET http://rem-rest-api.herokuapp.com/api/[whatever]
 ```
 
 Results:

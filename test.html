@@ -1,0 +1,42 @@
+<!doctype html>
+<input id="id" value="1" />
+<input id="first" value="aaa" />
+<input id="last" value="bbb" />
+<button id="update">update</button>
+<button id="create">create</button>
+<button id="refresh">refresh</button>
+<div id="list"></div>
+<script>
+//var url = "http://localhost:8000"
+var url = "http://rem-rest-api.herokuapp.com"
+var useCredentials = true
+refresh.onclick = function() {
+  var x = new XMLHttpRequest()
+  x.open("GET", url + "/api/users?limit=50", true)
+  x.withCredentials = useCredentials
+  x.send()
+  x.onload = function() {
+    var data = JSON.parse(x.responseText)
+    list.innerHTML = data.data.map(d => "<li>" + d.id + " - " + d.firstName + " " + d.lastName + "</li>").join("")
+  }
+}
+refresh.onclick()
+
+update.onclick = function() {
+  var x = new XMLHttpRequest()
+  x.open("PUT", url + "/api/users/" + id.value, true)
+  x.withCredentials = useCredentials
+  x.setRequestHeader("Content-Type", "application/json")
+  x.send(JSON.stringify({id: parseInt(id.value), firstName: first.value, lastName: last.value, val: 123}))
+  x.onload = function() {console.log(JSON.parse(x.responseText))}
+}
+
+create.onclick = function() {
+  var x = new XMLHttpRequest()
+  x.open("POST", url + "/api/users", true)
+  x.withCredentials = useCredentials
+  x.setRequestHeader("Content-Type", "application/json")
+  x.send(JSON.stringify({firstName: first.value, lastName: last.value, val: 234}))
+  x.onload = function() {console.log(JSON.parse(x.responseText))}
+}
+</script>
