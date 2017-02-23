@@ -23,6 +23,8 @@ http.createServer(function route(req, res) {
 			}
 			else throw new HttpError(404, "Not found")
 		}
+		var resStatus = req.headers['Rem-Response-Status']
+		if resStatus throw new HttpError(resStatus, "Rem-Response-Status")
 		if (args[1] !== "api") throw new HttpError(404, "Not found")
 		var key = args[2]
 		var id = Number(args[3])
