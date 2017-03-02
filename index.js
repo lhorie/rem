@@ -23,8 +23,8 @@ http.createServer(function route(req, res) {
 			}
 			else throw new HttpError(404, "Not found")
 		}
-		var resStatus = req.headers['Rem-Response-Status']
-		if resStatus throw new HttpError(resStatus, "Rem-Response-Status")
+		var resStatus = req.headers['rem-response-status']
+		if (resStatus) throw new HttpError(Number(resStatus), "Rem-Response-Status")
 		if (args[1] !== "api") throw new HttpError(404, "Not found")
 		var key = args[2]
 		var id = Number(args[3])
@@ -52,7 +52,7 @@ http.createServer(function route(req, res) {
 			var body = ""
 			req.on("data",function(data) {
 				body += data.toString()
-			})
+ 			})
 			req.on("end",function commit() {
 				try {
 					var item = body !== "" ? JSON.parse(body) : null
@@ -101,7 +101,7 @@ http.createServer(function route(req, res) {
 				"Access-Control-Allow-Origin": req.headers.origin,
 				"Access-Control-Allow-Credentials": "true",
 				"Access-Control-Allow-Methods": "GET,POST,PUT,DELETE,OPTIONS",
-				"Access-Control-Allow-Headers": "Content-Type",
+				"Access-Control-Allow-Headers": "Content-Type,Rem-Response-Status",
 				"Access-Control-Max-Age": 600, // seconds
 			})
 			res.end("")
