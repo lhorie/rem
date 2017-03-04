@@ -59,7 +59,7 @@ http.createServer(function route(req, res) {
 						if (req.method === "PUT") put(id, items, item)
 						if (req.method === "POST") post(id, items, item)
 					}
-					else throw new HttpError("Missing JSON input")
+					else throw new HttpError(400, "Missing JSON input")
 					db[key] = items
 					var output = stageData(db)
 					if (output.length <= 4093) {
