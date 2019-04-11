@@ -6,8 +6,8 @@ module.exports = {
       if (csv[i] === "\"") {
         start = i + 1
         while (++i) {
-          if (csv[i] === "\\") i += 2
           if (csv[i] === "\"") break
+          if (csv[i] === "\\") i += 1
         }
         var value = csv.substring(start, i).replace(/\\(.)/g, "$1")
         if (header) keys.push(value)
